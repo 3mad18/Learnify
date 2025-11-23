@@ -101,28 +101,28 @@ const Footer = () => {
               <li className="flex items-start">
                 <IoLocationSharp className="text-purple-400 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-400">
-                  123 Learning Lane, Knowledge City, Dhaka 1207, Bangladesh
+                  Alexandria Egypt
                 </span>
               </li>
               <li className="flex items-center">
                 <IoCall className="text-purple-400 mr-3" />
                 <a href="tel:+8801234567890" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  +880 1234 567890
+                  01007202636
                 </a>
               </li>
               <li className="flex items-center">
                 <IoMail className="text-purple-400 mr-3" />
                 <a href="mailto:support@shikshaalo.com" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  support@shikshaalo.com
+                  support@Learnify.com
                 </a>
               </li>
               <li className="flex items-center">
                 <MdOutlineSupportAgent className="text-purple-400 mr-3" />
-                <span className="text-gray-400">24/7 Support Center</span>
+                <span className="text-gray-400">Support Center</span>
               </li>
               <li className="flex items-center">
                 <IoLogoWhatsapp className="text-purple-400 mr-3" />
-                <a href="https://wa.me/8801234567890" className="text-gray-400 hover:text-purple-400 transition-colors">
+                <a href="https://wa.me/01007202636" className="text-gray-400 hover:text-purple-400 transition-colors">
                   Chat on WhatsApp
                 </a>
               </li>

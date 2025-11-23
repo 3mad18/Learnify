@@ -7,6 +7,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AddCourse from "../pages/Courses/AddCourse";
 import CourseDetails from "../pages/Courses/CourseDetails";
+import CourseContent from "../pages/Courses/CourseContent";
+import CourseManagementEditor from "../pages/Courses/CourseManagementEditor";
 import ManageCourses from "../pages/Courses/ManageCourses";
 import MyEnrolledCourses from "../pages/Courses/MyEnrolledCourses";
 import EditCourse from "../pages/Courses/EditCourse";
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "/course/:id",
         element: <CourseDetails />, // কোর্স ডিটেইলস দেখতে লগইন লাগবে
+      },
+      {
+        path: "/course-content/:id",
+        element: <PrivateRoute><CourseContent /></PrivateRoute>,
+      },
+      {
+        path: "/course-management/:id",
+        element: <PrivateRoute><CourseManagementEditor /></PrivateRoute>,
       },
 
       // --- Private Routes (সুরক্ষিত রুট) ---
