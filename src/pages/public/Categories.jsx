@@ -24,7 +24,7 @@ const Categories = () => {
                 </div>
                 <div className="flex justify-center">
                     <div className="grid grid-cols-2 gap-6 max-w-md">
-                        {categories.map((category, index) => (
+                        {     categories.map((category, index) => (
                             <Link to={`/courses/category/${category.name}`} key={index}>
                                 <div className="flex flex-col items-center p-6 bg-gray-700 rounded-lg text-white hover:bg-gray-600 transition-colors duration-300">
                                     <div className="text-4xl mb-4 text-blue-400">{category.icon}</div>

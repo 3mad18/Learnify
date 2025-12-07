@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth';
-import axiosSecure from '../../api/axiosSecure';
+import axiosSecure from '../../services/axiosSecure';
 import { FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 

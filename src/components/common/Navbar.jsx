@@ -135,6 +135,51 @@ const Navbar = () => {
                 >
                   Dashboard
                 </NavLink>
+
+                {(user?.email === 'admin@learnify.com' || user?.role === 'admin') && (
+                  <NavLink
+                    to="/admin"
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-red-600 text-white shadow-lg'
+                          : 'text-red-400 hover:text-white hover:bg-red-900'
+                      }`
+                    }
+                  >
+                    Admin
+                  </NavLink>
+                )}
+
+                {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && (
+                  <NavLink
+                    to="/instructor"
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-green-600 text-white shadow-lg'
+                          : 'text-green-400 hover:text-white hover:bg-green-900'
+                      }`
+                    }
+                  >
+                    Instructor
+                  </NavLink>
+                )}
+
+                {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && user.role !== 'instructor' && (
+                  <NavLink
+                    to="/student"
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-purple-600 text-white shadow-lg'
+                          : 'text-purple-400 hover:text-white hover:bg-purple-900'
+                      }`
+                    }
+                  >
+                    Student
+                  </NavLink>
+                )}
               </>
             )}
           </div>
@@ -214,13 +259,13 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link
-                  to="/login"
+                  to="/Auth/login"
                   className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   Login
                 </Link>
                 <Link
-                  to="/register"
+                  to="/Auth/register"
                   className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
                 >
                   Get Started
@@ -346,20 +391,68 @@ const Navbar = () => {
               >
                 Dashboard
               </NavLink>
+
+              {(user?.email === 'admin@learnify.com' || user?.role === 'admin') && (
+                <NavLink
+                  to="/admin"
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      isActive
+                        ? 'bg-red-600 text-white'
+                        : 'text-red-400 hover:text-white hover:bg-red-900'
+                    }`
+                  }
+                >
+                  Admin
+                </NavLink>
+              )}
+
+              {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && (
+                <NavLink
+                  to="/instructor"
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      isActive
+                        ? 'bg-green-600 text-white'
+                        : 'text-green-400 hover:text-white hover:bg-green-900'
+                    }`
+                  }
+                >
+                  Instructor
+                </NavLink>
+              )}
+
+              {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && user.role !== 'instructor' && (
+                <NavLink
+                  to="/student"
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      isActive
+                        ? 'bg-purple-600 text-white'
+                        : 'text-purple-400 hover:text-white hover:bg-purple-900'
+                    }`
+                  }
+                >
+                  Student
+                </NavLink>
+              )}
             </>
           )}
 
           {!user && (
             <div className="pt-4 border-t border-gray-700 mt-4">
               <Link
-                to="/login"
+                to="/Auth/login"
                 onClick={closeMobileMenu}
                 className="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition-colors duration-200"
               >
                 Login
               </Link>
               <Link
-                to="/register"
+                to="/Auth/register"
                 onClick={closeMobileMenu}
                 className="block px-3 py-2 mt-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 text-center"
               >
