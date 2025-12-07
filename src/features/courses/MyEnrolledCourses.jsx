@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FiBook, FiUser, FiTrash2, FiArrowLeft, FiClock, FiStar, FiZap } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import CourseCard from '../../components/shared/CourseCard'; // Import CourseCard
+import CourseCard from '../../components/common/CourseCard';
 
 // --- Skeleton Loader Component 
 const CourseCardSkeleton = () => (

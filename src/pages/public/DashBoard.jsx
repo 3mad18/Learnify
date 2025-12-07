@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaArrowRight } from 'react-icons/fa';
 import { FiBook, FiAward, FiBarChart2 } from 'react-icons/fi';
-import CourseCard from '../../components/shared/CourseCard'; // Import CourseCard
+import CourseCard from '../../components/common/CourseCard';
 
 const Dashboard = () => {
     const { user, loading: authLoading } = useContext(AuthContext);

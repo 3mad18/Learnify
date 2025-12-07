@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import CourseCard from '../../components/shared/CourseCard';
-import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import CourseCard from '../../components/common/CourseCard';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const PopularCourses = () => {
     const [courses, setCourses] = useState([]);

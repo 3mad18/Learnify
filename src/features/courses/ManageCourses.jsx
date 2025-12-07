@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast';
-import CourseCard from '../../components/shared/CourseCard'; // Import CourseCard
+import CourseCard from '../../components/common/CourseCard';
 
 const ManageCourses = () => {
     const { user } = useContext(AuthContext);
