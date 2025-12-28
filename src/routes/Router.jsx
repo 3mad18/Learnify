@@ -2,18 +2,24 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
-import Home from "../pages/Home/Home";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import AddCourse from "../pages/Courses/AddCourse";
-import CourseDetails from "../pages/Courses/CourseDetails";
-import ManageCourses from "../pages/Courses/ManageCourses";
-import MyEnrolledCourses from "../pages/Courses/MyEnrolledCourses";
-import EditCourse from "../pages/Courses/EditCourse";
+import Home from "../pages/public/Home";
+import Login from "../features/auth/Login";
+import Register from "../features/auth/Register";
+import AddCourse from "../features/courses/AddCourse";
+import CourseDetails from "../features/courses/CourseDetails";
+import ManageCourses from "../features/courses/ManageCourses";
+import MyEnrolledCourses from "../features/courses/MyEnrolledCourses";
+import EditCourse from "../features/courses/EditCourse";
 import ErrorPage from "../pages/ErrorPage";
-import AllCourses from "../pages/Courses/AllCourses";
-import Dashboard from "../pages/Home/DashBoard";
-import PrivateRoute from "./PrivateRoute"; // <<< PrivateRoute ইম্পোর্ট করুন
+import AllCourses from "../features/courses/AllCourses";
+import Dashboard from "../pages/public/DashBoard";
+import Admin from "../features/users/Admin";
+import Instructor from "../features/users/Instructor";
+import Student from "../features/users/Student";
+import AdminRoute from "./AdminRoute";
+import InstructorRoute from "./InstructorRoute";
+import StudentRoute from "./StudentRoute";
+import PrivateRoute from "./PrivateRoute"; // <<< PrivateRoute
 
 const router = createBrowserRouter([
   {
@@ -27,16 +33,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/login",
+        path: "/Auth/login",
         element: <Login />,
       },
       {
-        path: "/register",
+        path: "/Auth/register",
         element: <Register />,
       },
       {
         path: "courses",
-        element: <AllCourses />, // সকল কোর্স পেজটি আমরা পাবলিক রাখছি
+        element: <AllCourses />,
       },
       {
         path: "courses/category/:category",
@@ -44,17 +50,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/course/:id",
-        element: <CourseDetails />, // কোর্স ডিটেইলস দেখতে লগইন লাগবে
-      },
-
-      // --- Private Routes (সুরক্ষিত রুট) ---
-      {
-        path: "/add-course",
-        element: <PrivateRoute><AddCourse /></PrivateRoute>,
+        element: <CourseDetails />,
       },
       {
         path: "/manage-courses",
-        element: <PrivateRoute><ManageCourses /></PrivateRoute>,
+        element: <ManageCourses />,
+      },
+
+      // --- Private Routes 
+      {
+        path: "/add-course",
+        element: <PrivateRoute><AddCourse /></PrivateRoute>,
       },
       {
         path: "/edit-course/:id",
@@ -67,6 +73,18 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <PrivateRoute><Dashboard /></PrivateRoute>,
+      },
+      {
+        path: "admin",
+        element: <AdminRoute><Admin /></AdminRoute>,
+      },
+      {
+        path: "instructor",
+        element: <InstructorRoute><Instructor /></InstructorRoute>,
+      },
+      {
+        path: "student",
+        element: <StudentRoute><Student /></StudentRoute>,
       },
     ],
   },
