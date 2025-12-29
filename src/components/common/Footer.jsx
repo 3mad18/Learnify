@@ -101,24 +101,17 @@ const Footer = () => {
                 <IoLocationSharp className="text-purple-400 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-400">
                   610 cairo-street, sidi besh, alexandria
-=======
-                  610 cairo-street, sidi besh, alexandria
                 </span>
               </li>
               <li className="flex items-center">
                 <IoCall className="text-purple-400 mr-3" />
-                <a href="tel:+8801234567890" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  +20 1121193709
-                </a>
-=======
+                <a href="tel:+201121193709" className="text-gray-400 hover:text-purple-400 transition-colors">
                   +20 1121193709
                 </a>
               </li>
               <li className="flex items-center">
                 <IoMail className="text-purple-400 mr-3" />
-                <a href="mailto:support@shikshaalo.com" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  support@Learnify.com
-=======
+                <a href="mailto:support@Learnify.com" className="text-gray-400 hover:text-purple-400 transition-colors">
                   support@Learnify.com
                 </a>
               </li>
