@@ -110,8 +110,8 @@ const Instructor = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 font-medium capitalize transition-colors ${activeTab === tab
-                  ? 'text-blue-400 border-b-2 border-blue-400'
-                  : 'text-gray-400 hover:text-white'
+                ? 'text-blue-400 border-b-2 border-blue-400'
+                : 'text-gray-400 hover:text-white'
                 }`}
             >
               {tab === 'at-risk' ? 'At-Risk Students' : tab}

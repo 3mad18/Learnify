@@ -10,6 +10,7 @@ import { pdfjs } from 'react-pdf';
 import toast from 'react-hot-toast';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import QuizEditor from '../../components/forms/QuizEditor';
 
 // Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -28,6 +29,7 @@ const CourseContent = () => {
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [earnedXP, setEarnedXP] = useState(0);
 
     // Sample data for testing
     const sampleCourse = {
@@ -65,19 +67,22 @@ const CourseContent = () => {
     &lt;p&gt;My first paragraph.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                        `
+                        `,
+                        xp: 10
                     },
                     {
                         id: '1-2',
                         title: "CSS Styling Basics",
                         type: "video",
-                        content: "https://www.youtube.com/watch?v=1Rs2ND1ryYc"
+                        content: "https://www.youtube.com/watch?v=1Rs2ND1ryYc",
+                        xp: 15
                     },
                     {
                         id: '1-3',
                         title: "JavaScript Fundamentals",
                         type: "pdf",
-                        content: "https://www.tutorialspoint.com/javascript/javascript_tutorial.pdf"
+                        content: "https://www.tutorialspoint.com/javascript/javascript_tutorial.pdf",
+                        xp: 20
                     }
                 ]
             },
@@ -109,7 +114,8 @@ function Welcome() {
 }
 
 export default Welcome;</code></pre>
-                        `
+                        `,
+                        xp: 10
                     },
                     {
                         id: '2-2',
@@ -141,7 +147,19 @@ export default Welcome;</code></pre>
                                 ],
                                 answer: 0
                             }
-                        ]
+                        ],
+                        xp: 25
+                    },
+                    {
+                        id: '2-3',
+                        title: "React Coding Exercise",
+                        type: "coding",
+                        exercise: {
+                            description: "Create a React component that displays a greeting message.",
+                            starterCode: `function Greeting() {\n  // Your code here\n  return null;\n}`,
+                            solution: `function Greeting() {\n  return <h1>Hello, World!</h1>;\n}`
+                        },
+                        xp: 30
                     }
                 ]
             }
@@ -179,6 +197,11 @@ export default Welcome;</code></pre>
             // In a real app, you would also update this on the server
             return newSet;
         });
+        // Add XP for completed lesson
+        const lesson = course?.sections?.flatMap(s => s.lessons)?.find(l => l.id === lessonId);
+        if (lesson && lesson.xp) {
+            setEarnedXP(prevXP => prevXP + lesson.xp);
+        }
     };
 
     // Calculate course progress
@@ -197,6 +220,7 @@ export default Welcome;</code></pre>
     const renderLessonContent = () => {
         if (!activeLesson) return null;
 
+        // عرض فقط التمارين (exercises) أو المحتوى بدون أي محرر أو تشغيل كود
         switch (activeLesson.type) {
             case 'video':
                 return (
@@ -263,16 +287,51 @@ export default Welcome;</code></pre>
                     </div>
                 );
             case 'quiz':
+                // عرض الكويز فقط بدون محرر أو تشغيل
                 return (
-                    <div className="text-center py-12">
-                        <RiQuestionAnswerFill className="text-6xl text-blue-400 mx-auto mb-6" />
+                    <div className="py-8">
                         <h2 className="text-2xl font-bold mb-4">{activeLesson.title}</h2>
-                        <p className="text-gray-400 mb-8">This lesson contains a quiz to test your knowledge.</p>
+                        <p className="text-gray-400 mb-4">Test your knowledge in this lesson</p>
+                        {activeLesson.questions?.map((q, idx) => (
+                            <div key={idx} className="mb-6 p-4 bg-gray-800 rounded-lg">
+                                <div className="font-semibold mb-2">{idx + 1}. {q.question}</div>
+                                <div className="space-y-2">
+                                    {q.options.map((opt, oidx) => (
+                                        <label key={oidx} className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name={`quiz-${activeLesson.id}-q${idx}`}
+                                                value={oidx}
+                                                className="radio radio-primary"
+                                            />
+                                            <span>{opt}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                         <button
-                            onClick={() => navigate(`/course/${courseId}/assessment`)}
-                            className="btn btn-primary btn-lg"
+                            className="btn btn-primary mt-4"
+                            onClick={() => markLessonComplete(activeLesson.id)}
                         >
-                            Start Quiz
+                            Finish Quiz
+                        </button>
+                    </div>
+                );
+            case 'coding':
+                // عرض نص التمرين فقط بدون محرر أو تشغيل كود
+                return (
+                    <div className="py-8">
+                        <h2 className="text-2xl font-bold mb-4">{activeLesson.title}</h2>
+                        <p className="mb-4 text-gray-400">{activeLesson.exercise?.description}</p>
+                        <div className="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre className="text-sm overflow-x-auto"><code>{activeLesson.exercise?.starterCode}</code></pre>
+                        </div>
+                        <button
+                            onClick={() => markLessonComplete(activeLesson.id)}
+                            className="btn btn-success"
+                        >
+                            Mark Coding Exercise as Complete
                         </button>
                     </div>
                 );
@@ -288,6 +347,7 @@ export default Welcome;</code></pre>
             case 'article': return <BsFileText className="text-green-400" />;
             case 'pdf': return <FaFilePdf className="text-red-400" />;
             case 'quiz': return <RiQuestionAnswerFill className="text-yellow-400" />;
+            case 'coding': return <FaBook className="text-purple-400" />;
             default: return <FaBook className="text-gray-400" />;
         }
     };
@@ -298,6 +358,14 @@ export default Welcome;</code></pre>
     //     navigate(`/course/${courseId}`);
     //     return null;
     // }
+
+    // Leaderboard mock data
+    const leaderboard = [
+        { name: 'Alice', xp: 120, badge: '🏆' },
+        { name: 'Bob', xp: 110, badge: '🥈' },
+        { name: 'Charlie', xp: 90, badge: '🥉' },
+        { name: user?.displayName || 'You', xp: earnedXP, badge: '⭐' },
+    ];
 
     if (loading) {
         return (
@@ -337,6 +405,9 @@ export default Welcome;</code></pre>
                                 {completedLessons.size} of {course?.sections?.reduce((total, section) =>
                                     total + (section.lessons?.length || 0), 0
                                 )} lessons
+                            </span>
+                            <span className="text-sm text-yellow-400 font-bold">
+                                XP Earned: {earnedXP}
                             </span>
                         </div>
                         <progress
@@ -401,6 +472,22 @@ export default Welcome;</code></pre>
                             ))}
                         </div>
                     </div>
+                </aside>
+
+                {/* Leaderboard */}
+                <aside className="w-64 bg-gray-900 border-l border-gray-800 p-4 flex-shrink-0">
+                    <h2 className="text-lg font-semibold mb-4 text-yellow-400">Leaderboard</h2>
+                    <ul className="space-y-3">
+                        {leaderboard.map((user, idx) => (
+                            <li key={user.name} className="flex items-center justify-between bg-gray-800 rounded-lg px-4 py-2">
+                                <span className="flex items-center gap-2">
+                                    <span className="text-xl">{user.badge}</span>
+                                    <span className="font-bold">{user.name}</span>
+                                </span>
+                                <span className="text-yellow-300 font-semibold">{user.xp} XP</span>
+                            </li>
+                        ))}
+                    </ul>
                 </aside>
 
                 {/* Main Content */}

@@ -7,3 +7,7 @@ export { default as StatsCard } from './StatsCard';
 export { default as Breadcrumb } from './Breadcrumb';
 export { default as SearchBar } from './SearchBar';
 export { default as DataTable } from './DataTable';
+
+export { default as Leaderboard } from './Leaderboard';
+export { default as Badges } from './Badges';
+export { default as RecommendedCourses } from './RecommendedCourses';

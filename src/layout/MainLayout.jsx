@@ -3,6 +3,7 @@ import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom'; 
 import Navbar from '../components/common/Navbar'; 
 import Footer from '../components/common/Footer';
+import Chatbot from '../components/ui/Chatbot';
 
 const MainLayout = () => {
   
@@ -23,6 +24,12 @@ const MainLayout = () => {
       
       
       {showFooter && <Footer />}
+      {/* Chatbot floating UI */}
+      <React.Suspense fallback={null}>
+        {typeof window !== 'undefined' && (
+          <Chatbot />
+        )}
+      </React.Suspense>
     </div>
   );
 };

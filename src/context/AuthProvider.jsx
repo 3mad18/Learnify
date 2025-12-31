@@ -69,9 +69,11 @@ const AuthProvider = ({ children }) => {
     const logOut = () => {
         setLoading(true);
         localStorage.removeItem('access-token');
-        return signOut(auth);
+        localStorage.removeItem('user');
+        return signOut(auth).then(() => {
+            window.location.href = '/Auth/login';
+        });
     };
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
@@ -82,29 +84,39 @@ const AuthProvider = ({ children }) => {
                         ...currentUser,
                         role: currentUser.role || 'student'
                     };
-
                     setUser(userWithRole);
-
                     // Get JWT token
                     const tokenResponse = await axios.post('https://course-management-system-server-woad.vercel.app/api/jwt', {
                         email: currentUser.email,
                         role: userWithRole.role
                     });
-
                     localStorage.setItem('access-token', tokenResponse.data.token);
                     setLoading(false);
                 } catch (error) {
                     console.error('Error during authentication:', error);
-                    // toast.error('Failed to authenticate. Please try again.');
                     setLoading(false);
                 }
             } else {
-                setUser(null);
-                localStorage.removeItem('access-token');
-                setLoading(false);
+                // Check localStorage for hardcoded login
+                const localUser = localStorage.getItem('user');
+                if (localUser) {
+                    setUser(JSON.parse(localUser));
+                    setLoading(false);
+                } else {
+                    setUser(null);
+                    localStorage.removeItem('access-token');
+                    setLoading(false);
+                }
             }
         });
-
+        // On initial mount, check localStorage for hardcoded login
+        if (!user) {
+            const localUser = localStorage.getItem('user');
+            if (localUser) {
+                setUser(JSON.parse(localUser));
+                setLoading(false);
+            }
+        }
         return () => unsubscribe();
     }, []);
 

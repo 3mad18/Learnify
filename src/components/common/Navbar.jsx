@@ -80,32 +80,20 @@ const Navbar = () => {
               All Courses
             </NavLink>
 
-            {user && (
+            {/* صلاحيات الطالب */}
+            {user?.role === 'student' && (
               <>
                 <NavLink
-                  to="/add-course"
+                  to="/student"
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                      ? 'bg-purple-600 text-white shadow-lg'
+                      : 'text-purple-400 hover:text-white hover:bg-purple-900'
                     }`
                   }
                 >
-                  Add Course
+                  Student Dashboard
                 </NavLink>
-
-                <NavLink
-                  to="/manage-courses"
-                  className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                    }`
-                  }
-                >
-                  Manage Courses
-                </NavLink>
-
                 <NavLink
                   to="/my-enrolled-courses"
                   className={({ isActive }) =>
@@ -117,9 +105,25 @@ const Navbar = () => {
                 >
                   My Courses
                 </NavLink>
+              </>
+            )}
 
+            {/* صلاحيات المعلم */}
+            {user?.role === 'instructor' && (
+              <>
                 <NavLink
-                  to="/dashboard"
+                  to="/instructor"
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                      ? 'bg-green-600 text-white shadow-lg'
+                      : 'text-green-400 hover:text-white hover:bg-green-900'
+                    }`
+                  }
+                >
+                  Instructor Dashboard
+                </NavLink>
+                <NavLink
+                  to="/add-course"
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                       ? 'bg-blue-600 text-white shadow-lg'
@@ -127,51 +131,35 @@ const Navbar = () => {
                     }`
                   }
                 >
-                  Dashboard
+                  Add Course
                 </NavLink>
-
-                {(user?.email === 'admin@learnify.com' || user?.role === 'admin') && (
-                  <NavLink
-                    to="/admin"
-                    className={({ isActive }) =>
-                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                        ? 'bg-red-600 text-white shadow-lg'
-                        : 'text-red-400 hover:text-white hover:bg-red-900'
-                      }`
-                    }
-                  >
-                    Admin
-                  </NavLink>
-                )}
-
-                {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && (
-                  <NavLink
-                    to="/instructor"
-                    className={({ isActive }) =>
-                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                        ? 'bg-green-600 text-white shadow-lg'
-                        : 'text-green-400 hover:text-white hover:bg-green-900'
-                      }`
-                    }
-                  >
-                    Instructor
-                  </NavLink>
-                )}
-
-                {user && user.email !== 'admin@learnify.com' && user.email !== 'emad@gmail.com' && user.role !== 'instructor' && (
-                  <NavLink
-                    to="/student"
-                    className={({ isActive }) =>
-                      `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                        ? 'bg-purple-600 text-white shadow-lg'
-                        : 'text-purple-400 hover:text-white hover:bg-purple-900'
-                      }`
-                    }
-                  >
-                    Student
-                  </NavLink>
-                )}
+                <NavLink
+                  to="/manage-courses"
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                    }`
+                  }
+                >
+                  Manage Courses
+                </NavLink>
               </>
+            )}
+
+            {/* صلاحيات المدير */}
+            {user?.role === 'admin' && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                    ? 'bg-red-600 text-white shadow-lg'
+                    : 'text-red-400 hover:text-white hover:bg-red-900'
+                  }`
+                }
+              >
+                Admin Dashboard
+              </NavLink>
             )}
           </div>
 
