@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import { Leaderboard, Badges, RecommendedCourses } from '../../components/common';
+import recommendationService from '../../services/recommendationService';
 
 const Student = () => {
   const { user } = React.useContext(AuthContext);
@@ -88,7 +89,7 @@ const Student = () => {
       } else {
         throw new Error('Failed to perform action');
       }
-    } catch (error) {
+    } catch {
       toast.error(`Failed to ${action} course`);
     }
   };
@@ -255,6 +256,48 @@ const Student = () => {
                     </div>
                   </div>
                 </div>
+                
+                {/* Recommended For You Section */}
+                <div className="bg-gray-800 rounded-lg border border-gray-700 mt-8">
+                  <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-semibold">Recommended For You</h2>
+                      <p className="text-sm text-gray-400 mt-1">Personalized based on your learning progress</p>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {recommendationService.getSampleRecommendations('mixed').recommendations.slice(0, 4).map(({ course, reason }) => (
+                        <Link 
+                          key={course.id} 
+                          to={`/course/${course.id}`}
+                          className="bg-gray-700 rounded-lg p-4 flex flex-col hover:bg-gray-600 transition-colors border border-gray-600 hover:border-cyan-500 group"
+                        >
+                          <div className="flex-shrink-0 mb-3">
+                            <img 
+                              src={course.image} 
+                              alt={course.title}
+                              className="w-full h-32 object-cover rounded group-hover:scale-105 transition-transform"
+                            />
+                          </div>
+                          <span className="text-xs font-medium text-purple-400 uppercase tracking-wide mb-1">
+                            {course.category}
+                          </span>
+                          <h3 className="font-semibold text-white mb-2 line-clamp-2">{course.title}</h3>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="px-2 py-0.5 bg-blue-900/50 text-blue-300 text-xs rounded-full">
+                              {course.level}
+                            </span>
+                            <span className="text-xs text-gray-400">{course.rating} ★</span>
+                          </div>
+                          <p className="text-xs text-cyan-300 mt-auto">
+                            {reason}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </>
             )}
             {/* Courses Tab */}
@@ -372,8 +415,6 @@ const Student = () => {
                 </div>
               </div>
             )}
-            {/* Recommended Courses at the end of the page */}
-            <RecommendedCourses userEmail={user.email} />
           </div>
           {/* Sidebar */}
           <div className="w-full lg:w-80 flex-shrink-0">
