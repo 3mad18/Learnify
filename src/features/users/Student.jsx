@@ -22,9 +22,9 @@ import ProgressCard from '../../components/common/ProgressCard';
 // Sample data structure
 const sampleDashboard = {
   stats: {
-    enrolledCourses: 3,
-    inProgress: 3,
-    completed: 0,
+    enrolledCourses: 5,
+    inProgress: 2,
+    completed: 3,
     currentLevel: 4,
     totalXP: 450
   },
@@ -55,6 +55,24 @@ const sampleDashboard = {
       image: "https://via.placeholder.com/300x200?text=React",
       lastAccessed: "3 days ago",
       category: "React"
+    },
+    {
+      id: '4',
+      title: "Data Science Basics",
+      progress: 85,
+      lessons: "11/13 lessons completed",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
+      lastAccessed: "Yesterday",
+      category: "Data Science"
+    },
+    {
+      id: '5',
+      title: "JavaScript Advanced",
+      progress: 100,
+      lessons: "12/12 lessons completed",
+      image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400",
+      lastAccessed: "1 week ago",
+      category: "Web Development"
     }
   ],
   deadlines: [
@@ -114,6 +132,10 @@ const Student = () => {
 
   const handleCourseClick = (courseId) => {
     navigate(`/course/${courseId}/learn`);
+  };
+
+  const handleContinueCourse = (courseId) => {
+    handleCourseClick(courseId);
   };
 
   const getDeadlineColor = (daysLeft) => {
@@ -305,7 +327,7 @@ const Student = () => {
               </div>
             </div>
 
-            {/* Course Progress Grid */}
+            {/* My Enrolled Courses (sample) */}
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold flex items-center">
@@ -321,7 +343,7 @@ const Student = () => {
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses.map((course) => (
+                {courses.slice(0, 3).map((course) => (
                   <div
                     key={course.id}
                     role="button"
@@ -337,7 +359,7 @@ const Student = () => {
                       actionText="Continue Learning"
                       onAction={(e) => {
                         e?.stopPropagation?.();
-                        handleCourseClick(course.id);
+                        handleContinueCourse(course.id);
                       }}
                     />
                   </div>
@@ -437,7 +459,7 @@ const Student = () => {
                         <td className="py-3 px-4">
                           <button
                             type="button"
-                            onClick={() => handleCourseClick(course.id)}
+                            onClick={() => handleContinueCourse(course.id)}
                             className="p-2 text-cyan-400 hover:bg-cyan-900 rounded"
                             aria-label={`Continue learning ${course.title}`}
                           >
