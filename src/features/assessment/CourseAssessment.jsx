@@ -183,16 +183,22 @@ const CourseAssessment = () => {
                             })}
                         </div>
 
-                        <div className="flex gap-4">
+                        <div className="flex flex-wrap gap-4">
                             <button
                                 onClick={handleRestart}
-                                className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white"
+                                className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none"
                             >
                                 Restart Assessment
                             </button>
                             <button
+                                onClick={() => navigate(`/course/${courseId}/learn`)}
+                                className="btn bg-green-600 hover:bg-green-700 text-white border-none"
+                            >
+                                Continue Learning
+                            </button>
+                            <button
                                 onClick={handleBackToCourse}
-                                className="btn btn-secondary"
+                                className="btn bg-gray-700 hover:bg-gray-600 text-white border-none"
                             >
                                 Back to Course
                             </button>
@@ -241,7 +247,7 @@ const CourseAssessment = () => {
 
                         <button
                             onClick={handleContinueToNextTopic}
-                            className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white w-full"
+                            className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none w-full"
                         >
                             {currentTopicIndex === assessmentConfig.numberOfTopics - 1 ? 'View Results' : 'Next Topic'}
                         </button>
@@ -270,7 +276,7 @@ const CourseAssessment = () => {
                         </h1>
                         <button
                             onClick={handleBackToCourse}
-                            className="btn btn-ghost btn-sm"
+                            className="btn bg-gray-700 hover:bg-gray-600 text-white border-none btn-sm"
                         >
                             Back to Course
                         </button>
@@ -308,7 +314,7 @@ const CourseAssessment = () => {
                                 <label
                                     key={index}
                                     className={`block p-4 rounded-lg border cursor-pointer transition-all ${selectedAnswers[currentQuestion.id] === index
-                                        ? 'border-indigo-500 bg-indigo-900/30'
+                                        ? 'border-cyan-500 bg-cyan-900/30'
                                         : 'border-gray-600 hover:border-gray-500 hover:bg-gray-700/50'
                                         }`}
                                 >
@@ -331,7 +337,7 @@ const CourseAssessment = () => {
                         <div className="space-y-4">
                             <input
                                 type="text"
-                                className="input input-bordered w-full bg-gray-700 text-white border-gray-600"
+                                className="input input-bordered bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 w-full"
                                 placeholder="Type your answer here..."
                                 value={selectedAnswers[currentQuestion.id] || ''}
                                 onChange={(e) => handleAnswerSelect(currentQuestion.id, e.target.value)}
@@ -349,7 +355,7 @@ const CourseAssessment = () => {
                                     </div>
                                     <span className="text-gray-400">→</span>
                                     <select
-                                        className="select select-bordered flex-1 bg-gray-700 text-white border-gray-600"
+                                        className="select select-bordered flex-1 bg-gray-700 border-gray-600 text-white focus:outline-none focus:border-cyan-500"
                                         value={selectedAnswers[currentQuestion.id]?.[idx] || ''}
                                         onChange={(e) => {
                                             const currentAnswers = selectedAnswers[currentQuestion.id] || {};
@@ -401,7 +407,7 @@ const CourseAssessment = () => {
                         <button
                             onClick={handleNextQuestion}
                             disabled={selectedAnswers[currentQuestion.id] === undefined || selectedAnswers[currentQuestion.id] === ''}
-                            className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {currentQuestionIndex === currentTopicQuestions.length - 1 ? 'Complete Topic' : 'Next Question'}
                         </button>

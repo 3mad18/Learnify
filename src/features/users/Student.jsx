@@ -7,8 +7,6 @@ import {
   Clock,
   Target,
   Calendar,
-  Play,
-  CheckCircle,
   Star,
   TrendingUp,
   AlertTriangle,
@@ -16,8 +14,9 @@ import {
   Flame
 } from 'lucide-react';
 
-import { StatsGrid, ProgressBar, Leaderboard, Badges } from '../../components/common';
-import ProgressCard from '../../components/common/ProgressCard';
+import { StatsGrid, ProgressBar, Badges } from '../../components/common';
+import EnrolledCourseCard from '../../components/common/EnrolledCourseCard';
+import { navigations } from '../../utils/navigationConfig';
 import MyEnrolledCourses from '../courses/MyEnrolledCourses';
 
 // Sample data structure
@@ -32,49 +31,54 @@ const sampleDashboard = {
   courses: [
     {
       id: '1',
-      title: "Web Development Fundamentals",
+      title: 'Web Development Fundamentals',
       progress: 42,
-      lessons: "5/12 lessons completed",
-      image: "https://via.placeholder.com/300x200?text=Web+Dev",
-      lastAccessed: "Today",
-      category: "Web Development"
+      lessonsCompleted: 5,
+      totalLessons: 12,
+      image: 'https://via.placeholder.com/300x200?text=Web+Dev',
+      lastAccessed: 'Today',
+      category: 'Web Development',
     },
     {
       id: '2',
-      title: "Python Basics",
+      title: 'Python Basics',
       progress: 60,
-      lessons: "9/15 lessons completed",
-      image: "https://via.placeholder.com/300x200?text=Python",
-      lastAccessed: "2 days ago",
-      category: "Python"
+      lessonsCompleted: 9,
+      totalLessons: 15,
+      image: 'https://via.placeholder.com/300x200?text=Python',
+      lastAccessed: '2 days ago',
+      category: 'Python',
     },
     {
       id: '3',
-      title: "React Advanced",
+      title: 'React Advanced',
       progress: 30,
-      lessons: "6/20 lessons completed",
-      image: "https://via.placeholder.com/300x200?text=React",
-      lastAccessed: "3 days ago",
-      category: "React"
+      lessonsCompleted: 6,
+      totalLessons: 20,
+      image: 'https://via.placeholder.com/300x200?text=React',
+      lastAccessed: '3 days ago',
+      category: 'React',
     },
     {
       id: '4',
-      title: "Data Science Basics",
+      title: 'Data Science Basics',
       progress: 85,
-      lessons: "11/13 lessons completed",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
-      lastAccessed: "Yesterday",
-      category: "Data Science"
+      lessonsCompleted: 11,
+      totalLessons: 13,
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400',
+      lastAccessed: 'Yesterday',
+      category: 'Data Science',
     },
     {
       id: '5',
-      title: "JavaScript Advanced",
+      title: 'JavaScript Advanced',
       progress: 100,
-      lessons: "12/12 lessons completed",
-      image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400",
-      lastAccessed: "1 week ago",
-      category: "Web Development"
-    }
+      lessonsCompleted: 12,
+      totalLessons: 12,
+      image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400',
+      lastAccessed: '1 week ago',
+      category: 'Web Development',
+    },
   ],
   deadlines: [
     { course: "Web Development", assignment: "Quiz", dueDate: "2024-01-10", daysLeft: 3 },
@@ -83,27 +87,33 @@ const sampleDashboard = {
     { course: "Data Science", assignment: "Quiz", dueDate: "2024-01-12", daysLeft: 5 }
   ],
   recommended: [
-    { 
+    {
       id: 1,
-      title: "Continue: React Fundamentals", 
-      progress: 30, 
-      action: "View",
-      description: "2 lessons remaining"
+      title: 'Continue: React Advanced',
+      progress: 30,
+      action: 'Continue Learning',
+      description: 'Pick up where you left off',
+      type: 'continue',
+      courseId: '3',
     },
-    { 
+    {
       id: 2,
-      title: "Start: Node.js Basics", 
-      progress: 0, 
-      action: "View",
-      description: "Recommended based on progress"
+      title: 'Start: Node.js Basics',
+      progress: 0,
+      action: 'Browse Courses',
+      description: 'Recommended based on progress',
+      type: 'browse',
+      to: '/courses',
     },
-    { 
+    {
       id: 3,
-      title: "Complete Quiz: Data Structures", 
-      progress: 100, 
-      action: "Take Quiz",
-      description: "Quiz pending"
-    }
+      title: 'Take Quiz: Data Structures',
+      progress: 0,
+      action: 'Take Quiz',
+      description: 'Assessment pending',
+      type: 'quiz',
+      courseId: '1',
+    },
   ],
   recentActivity: [
     { action: "Completed Module 2", course: "Web Development", time: "2 hours ago", icon: "✅", xp: null },
@@ -131,8 +141,10 @@ const Student = () => {
   const [recentActivity] = useState(sampleDashboard.recentActivity);
   const [categoryProgress] = useState(sampleDashboard.categoryProgress);
 
+  const recommendedSectionRef = React.useRef(null);
+
   const handleCourseClick = (courseId) => {
-    navigate(`/course/${courseId}/learn`);
+    navigate(navigations.continueCourse(courseId));
   };
 
   const handleContinueCourse = (courseId) => {
@@ -162,9 +174,25 @@ const Student = () => {
               </h1>
               <p className="text-gray-400">Track your learning progress and achievements</p>
             </div>
-            <div className="hidden sm:flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full">
-              <Flame className="w-5 h-5" />
-              <span className="font-semibold">{stats.currentLevel} Day Streak!</span>
+            <div className="hidden sm:flex items-center gap-3">
+              <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full">
+                <Flame className="w-5 h-5" />
+                <span className="font-semibold">{stats.currentLevel} Day Streak!</span>
+              </div>
+
+              <button
+                onClick={() => navigate(navigations.achievements())}
+                className="btn bg-gray-700 hover:bg-gray-600 text-white border-none btn-sm"
+              >
+                View Achievements
+              </button>
+
+              <button
+                onClick={() => recommendedSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none btn-sm"
+              >
+                View Recommended
+              </button>
             </div>
           </div>
 
@@ -256,7 +284,10 @@ const Student = () => {
             {/* Recommended Next Steps & Dead */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Recommended Next Steps */}
-              <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+              <div
+                ref={recommendedSectionRef}
+                className="bg-gray-800 rounded-xl border border-gray-700 p-6"
+              >
                 <h2 className="text-xl font-semibold mb-4 flex items-center">
                   <Target className="w-5 h-5 mr-2 text-cyan-400" />
                   Recommended Next Steps
@@ -280,14 +311,29 @@ const Student = () => {
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="w-32">
-                          <ProgressBar 
-                            current={item.progress} 
-                            max={100} 
+                          <ProgressBar
+                            current={item.progress}
+                            max={100}
                             color={item.progress === 100 ? 'green' : 'blue'}
                             height="h-2"
                           />
                         </div>
-                        <button className="px-4 py-2 bg-cyan-600 text-white text-sm rounded-lg hover:bg-cyan-700 transition-colors flex items-center group-hover:translate-x-1 transition-transform">
+                        <button
+                          onClick={() => {
+                            if (item.type === 'continue') {
+                              navigate(navigations.continueCourse(item.courseId));
+                              return;
+                            }
+                            if (item.type === 'quiz') {
+                              navigate(navigations.courseAssessment(item.courseId));
+                              return;
+                            }
+                            if (item.to) {
+                              navigate(item.to);
+                            }
+                          }}
+                          className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none btn-sm flex items-center"
+                        >
                           {item.action}
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </button>
@@ -345,25 +391,11 @@ const Student = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.slice(0, 3).map((course) => (
-                  <div
+                  <EnrolledCourseCard
                     key={course.id}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => handleCourseClick(course.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleCourseClick(course.id);
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <ProgressCard
-                      {...course}
-                      actionText="Continue Learning"
-                      onAction={(e) => {
-                        e?.stopPropagation?.();
-                        handleContinueCourse(course.id);
-                      }}
-                    />
-                  </div>
+                    course={course}
+                    onContinue={handleContinueCourse}
+                  />
                 ))}
               </div>
             </div>
