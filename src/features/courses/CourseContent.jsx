@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import { FaPlay, FaCheckCircle, FaLock, FaFilePdf, FaBook } from 'react-icons/fa';
 import { BsFileText } from 'react-icons/bs';
@@ -13,14 +13,12 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import QuizEditor from '../../components/forms/QuizEditor';
 import ProgressBar from '../../components/common/ProgressBar';
 import XPCounter from '../../components/common/XPCounter';
-import { navigations } from '../../utils/navigationConfig';
 
 // Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const CourseContent = () => {
     const { id: courseId } = useParams();
-    const navigate = useNavigate();
     // eslint-disable-next-line no-unused-vars
     const { user } = useContext(AuthContext);
 
@@ -583,7 +581,7 @@ run();`
                         <div dangerouslySetInnerHTML={{ __html: activeLesson.content }} />
                         <button
                             onClick={() => markLessonComplete(activeLesson.id)}
-                            className="mt-4 btn bg-green-600 hover:bg-green-700 text-white border-none"
+                            className="mt-4 btn btn-primary"
                         >
                             Mark as Complete
                         </button>
@@ -605,7 +603,7 @@ run();`
                             <button
                                 onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}
                                 disabled={pageNumber <= 1}
-                                className="btn bg-gray-700 hover:bg-gray-600 text-white border-none btn-sm"
+                                className="btn btn-sm"
                             >
                                 Previous
                             </button>
@@ -613,7 +611,7 @@ run();`
                             <button
                                 onClick={() => setPageNumber(prev => Math.min(prev + 1, numPages))}
                                 disabled={pageNumber >= (numPages || 1)}
-                                className="btn bg-gray-700 hover:bg-gray-600 text-white border-none btn-sm"
+                                className="btn btn-sm"
                             >
                                 Next
                             </button>
@@ -622,7 +620,7 @@ run();`
                             href={activeLesson.content}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-4 btn bg-gray-700 hover:bg-gray-600 text-white border-none w-full"
+                            className="mt-4 btn btn-outline w-full"
                         >
                             <FaFilePdf className="mr-2" /> Download PDF
                         </a>
@@ -687,7 +685,7 @@ run();`
                                             placeholder="Your answer..."
                                             value={answers[currentQuestion.id] || ''}
                                             onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
-                                            className="input input-bordered bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 w-full"
+                                            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-cyan-500 focus:outline-none"
                                         />
                                     </div>
                                 )}
@@ -748,35 +746,33 @@ run();`
                                 )}
                             </div>
 
-                            <div className="flex justify-between items-center mt-6 gap-3">
-                                <button
+                            <div className="flex justify-between items-center mt-6">
+                                <button 
                                     onClick={() => {
                                         setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1));
                                     }}
-                                    className="btn bg-gray-700 hover:bg-gray-600 text-white border-none"
+                                    className="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     disabled={currentQuestionIndex === 0}
                                 >
                                     ← Previous
                                 </button>
-
+                                
                                 {currentQuestionIndex === activeLesson.questions.length - 1 ? (
-                                    <button
+                                    <button 
                                         onClick={() => {
                                             markLessonComplete(activeLesson.id);
                                             toast.success('Quiz completed!');
                                         }}
-                                        className="btn bg-green-600 hover:bg-green-700 text-white border-none"
+                                        className="px-6 py-2 bg-green-600 hover:bg-green-700 rounded text-white font-semibold transition-colors"
                                     >
                                         Finish Quiz
                                     </button>
                                 ) : (
-                                    <button
+                                    <button 
                                         onClick={() => {
-                                            setCurrentQuestionIndex(
-                                                Math.min(activeLesson.questions.length - 1, currentQuestionIndex + 1)
-                                            );
+                                            setCurrentQuestionIndex(Math.min(activeLesson.questions.length - 1, currentQuestionIndex + 1));
                                         }}
-                                        className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none"
+                                        className="px-6 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                         disabled={currentQuestionIndex === activeLesson.questions.length - 1}
                                     >
                                         Next →
@@ -798,7 +794,7 @@ run();`
                         </div>
                         <button
                             onClick={() => markLessonComplete(activeLesson.id)}
-                            className="btn bg-green-600 hover:bg-green-700 text-white border-none"
+                            className="btn btn-success"
                         >
                             Mark Coding Exercise as Complete
                         </button>
@@ -850,51 +846,7 @@ run();`
     }
 
     const progress = calculateProgress();
-    const totalLessons = course?.sections?.reduce(
-        (total, section) => total + (section.lessons?.length || 0),
-        0
-    );
-
-    const flattenedLessons = [];
-    (course?.sections || []).forEach((section) => {
-        (section.lessons || []).forEach((lesson) => {
-            if (lesson?.id) flattenedLessons.push(lesson);
-        });
-    });
-
-    const activeLessonIndex = activeLesson?.id
-        ? flattenedLessons.findIndex((l) => l.id === activeLesson.id)
-        : -1;
-
-    const goToLessonIndex = (index) => {
-        const lesson = flattenedLessons[index];
-        if (!lesson) return;
-
-        setActiveLesson(lesson);
-        setCurrentQuestionIndex(0);
-        setAnswers({});
-        setPageNumber(1);
-    };
-
-    const handlePreviousLesson = () => {
-        if (activeLessonIndex <= 0) {
-            toast('No previous lesson');
-            return;
-        }
-        goToLessonIndex(activeLessonIndex - 1);
-    };
-
-    const handleNextLesson = () => {
-        if (activeLessonIndex < 0) {
-            toast('Select a lesson to begin');
-            return;
-        }
-        if (activeLessonIndex >= flattenedLessons.length - 1) {
-            toast.success('You have completed all lessons in this course');
-            return;
-        }
-        goToLessonIndex(activeLessonIndex + 1);
-    };
+    const totalLessons = course?.sections?.reduce((total, section) => total + (section.lessons?.length || 0), 0);
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100">
@@ -921,19 +873,11 @@ run();`
                                 />
                             </div>
                         </div>
-                        <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center justify-between">
                             <span className="text-sm text-yellow-400 font-bold">
                                 XP Earned: {earnedXP}
                             </span>
-                            <div className="flex items-center gap-3">
-                                <XPCounter xp={450} compact />
-                                <button
-                                    onClick={() => navigate(navigations.courseAssessment(courseId))}
-                                    className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none btn-sm"
-                                >
-                                    Take Quiz
-                                </button>
-                            </div>
+                            <XPCounter xp={450} compact />
                         </div>
                     </div>
                 </div>
@@ -966,7 +910,7 @@ run();`
                                                     <button
                                                         onClick={() => setActiveLesson(lesson)}
                                                         className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-2 text-sm transition-colors ${isActive
-                                                            ? 'bg-cyan-900/40 text-white'
+                                                            ? 'bg-blue-900 text-white'
                                                             : 'hover:bg-gray-700 text-gray-300'
                                                             }`}
                                                     >
@@ -981,7 +925,7 @@ run();`
                                                             {lessonIndex + 1}. {lesson.title}
                                                         </span>
                                                         {!isCompleted && isActive && (
-                                                            <span className="ml-auto w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+                                                            <span className="ml-auto w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
                                                         )}
                                                     </button>
                                                 </li>
@@ -1002,21 +946,22 @@ run();`
                             <div className="bg-gray-800 rounded-lg p-6">
                                 {renderLessonContent()}
                             </div>
-                            <div className="mt-6 flex justify-between gap-3">
+                            <div className="mt-6 flex justify-between">
                                 <button
-                                    className="btn bg-gray-700 hover:bg-gray-600 text-white border-none"
-                                    onClick={handlePreviousLesson}
-                                    disabled={activeLessonIndex <= 0}
+                                    className="btn btn-outline"
+                                    onClick={() => {
+                                        // Find previous lesson logic would go here
+                                        toast('Previous lesson');
+                                    }}
                                 >
                                     Previous Lesson
                                 </button>
                                 <button
-                                    className="btn bg-cyan-600 hover:bg-cyan-700 text-white border-none"
-                                    onClick={handleNextLesson}
-                                    disabled={
-                                        activeLessonIndex < 0 ||
-                                        activeLessonIndex >= flattenedLessons.length - 1
-                                    }
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        // Find next lesson logic would go here
+                                        toast('Next lesson');
+                                    }}
                                 >
                                     Next Lesson
                                 </button>
