@@ -52,7 +52,10 @@ export default function CheckoutForm() {
 
       <button
         disabled={isLoading || !stripe || !elements}
-        className="w-full btn bg-cyan-600 hover:bg-cyan-700 text-white border-none disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 px-6 rounded-lg font-bold text-white transition-all transform hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          background: "linear-gradient(90deg, #4f46e5 0%, #9333ea 100%)",
+        }}
       >
         {isLoading ? (
           <div className="flex items-center justify-center gap-2">
