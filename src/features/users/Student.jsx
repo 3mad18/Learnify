@@ -354,7 +354,7 @@ const Student = () => {
                   My Enrolled Courses
                 </h2>
                 <Link
-                  to="/my-enrolled-courses"
+                  to="/my-courses"
                   className="text-cyan-400 hover:text-cyan-300 flex items-center text-sm"
                 >
                   View All
