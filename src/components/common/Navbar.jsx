@@ -95,7 +95,7 @@ const Navbar = () => {
                   Student Dashboard
                 </NavLink>
                 <NavLink
-                  to="/my-enrolled-courses"
+                  to="/my-courses"
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
@@ -249,7 +249,7 @@ const Navbar = () => {
                               <span className="text-yellow-400">🏆</span> Achievements
                             </Link>
                             <Link
-                              to="/my-enrolled-courses"
+                              to="/my-courses"
                               className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200"
                             >
                               <span className="text-blue-300">📖</span> My Courses
@@ -419,7 +419,7 @@ const Navbar = () => {
               </NavLink>
 
               <NavLink
-                to="/my-enrolled-courses"
+                to="/my-courses"
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 ${isActive

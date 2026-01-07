@@ -155,7 +155,7 @@ const Dashboard = () => {
                     <div>
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold">Continue Learning</h2>
-                            <Link to="/my-enrolled-courses" className="text-cyan-400 hover:text-cyan-300 flex items-center text-sm">
+                            <Link to="/my-courses" className="text-cyan-400 hover:text-cyan-300 flex items-center text-sm">
                                 View all <FaArrowRight className="ml-1" />
                             </Link>
                         </div>
