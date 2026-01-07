@@ -429,7 +429,7 @@ const Student = () => {
               <h2 className="text-xl font-semibold">My Courses</h2>
             </div>
             <div className="p-6">
-              {/* عرض الدورات المسجلة للطالب */}
+              {/* Display the student's enrolled courses */}
               <MyEnrolledCourses />
             </div>
           </div>

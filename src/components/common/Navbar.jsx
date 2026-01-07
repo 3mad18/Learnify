@@ -80,7 +80,7 @@ const Navbar = () => {
               All Courses
             </NavLink>
 
-            {/* صلاحيات الطالب */}
+            {/* Student Permissions */}
             {user?.role === 'student' && (
               <>
                 <NavLink
@@ -108,7 +108,7 @@ const Navbar = () => {
               </>
             )}
 
-            {/* صلاحيات المعلم */}
+            {/* Instructor Permissions */}
             {user?.role === 'instructor' && (
               <>
                 <NavLink
@@ -147,7 +147,7 @@ const Navbar = () => {
               </>
             )}
 
-            {/* صلاحيات المدير */}
+            {/* Admin Permissions */}
             {user?.role === 'admin' && (
               <NavLink
                 to="/admin"
