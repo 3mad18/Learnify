@@ -495,7 +495,7 @@ run();`
     // Fetch course data and check enrollment status
     useEffect(() => {
         setLoading(true);
-        document.title = "تفاصيل الدورة | Learnify";
+        document.title = "Course Details | Learnify";
 
         try {
             // Use sample data for testing
@@ -508,8 +508,8 @@ run();`
             }
 
             } catch {
-            setError('حدث خطأ في تحميل محتوى الدورة');
-            toast.error('فشل تحميل محتوى الدورة');
+            setError('An error occurred while loading the course content');
+            toast.error('Failed to load course content');
             } finally {
             setLoading(false);
             }
@@ -561,7 +561,7 @@ run();`
     const renderLessonContent = () => {
         if (!activeLesson) return null;
 
-        // عرض فقط التمارين (exercises) أو المحتوى بدون أي محرر أو تشغيل كود
+        // Display only exercises or content without any editor or code execution
         switch (activeLesson.type) {
             case 'video':
                 return (
@@ -785,7 +785,7 @@ run();`
                 );
             }
             case 'coding':
-                // عرض نص التمرين فقط بدون محرر أو تشغيل كود
+                // Display exercise text only without editor or code execution
                 return (
                     <div className="py-8">
                         <h2 className="text-2xl font-bold mb-4">{activeLesson.title}</h2>
