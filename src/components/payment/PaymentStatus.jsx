@@ -18,7 +18,7 @@ const PaymentStatus = () => {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case "succeeded":
-          setMessage("Payment succeeded! Welcome to Stride.");
+          setMessage("Payment succeeded! Welcome to Learnify.");
           break;
         case "processing":
           setMessage("Your payment is processing.");

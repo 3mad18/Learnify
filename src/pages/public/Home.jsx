@@ -8,15 +8,14 @@ import TopInstructors from './TopInstructors';
 import Testimonials from './Testimonials';
 import Categories from './Categories';
 import Newsletter from './Newsletter';
-import MottoSection from './MottoSection';
 
 
 const Home = () => {
   useEffect(() => {
-    document.title = "Home | Stride";
+    document.title = "Home | Learnify";
   }, []);
   useEffect(() => {
-    document.title = 'Stride | Home';
+    document.title = 'Learnify | Home';
   }, []);
 
   return (
@@ -25,10 +24,7 @@ const Home = () => {
       {/* 1. Banner Section */}
       <Banner />
 
-      {/* 2. Motto Section */}
-      <MottoSection />
-
-      {/* 3. Latest Courses Section */}
+      {/* 2. Latest Courses Section */}
       <LatestCourses />
 
       {/* 3. Popular Courses Section */}
